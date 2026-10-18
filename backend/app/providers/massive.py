@@ -16,12 +16,14 @@ class MassiveProvider:
     name = "massive"
     base_url = "https://api.massive.com"
 
-    def __init__(self, api_key: str, client: httpx.Client | None = None):
+    def __init__(self, api_key: str, client: httpx.Client | None = None, requests_per_minute: int = 0):
         if not api_key:
             raise ProviderError("Set MASSIVE_API_KEY on the backend to ingest live provider data")
         self.client = client or httpx.Client(timeout=40, follow_redirects=False)
         self._owns_client = client is None
         self._key = api_key
+        self._interval = 60 / requests_per_minute if requests_per_minute > 0 else 0
+        self._next_request = 0.0
 
     def close(self):
         if self._owns_client:
@@ -39,6 +41,10 @@ class MassiveProvider:
         ):
             raise ProviderError("Rejected unexpected provider pagination destination")
         for attempt in range(4):
+            delay = self._next_request - time.monotonic()
+            if delay > 0:
+                time.sleep(delay)
+            self._next_request = time.monotonic() + self._interval
             try:
                 response = self.client.get(
                     url, params=params, headers={"Authorization": f"Bearer {self._key}"}

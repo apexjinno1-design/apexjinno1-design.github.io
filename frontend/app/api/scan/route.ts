@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { apiBaseUrl } from "@/lib/api";
 
 export async function POST(request: NextRequest) {
   // Same-origin browser use; this local research app has no public authentication boundary.
@@ -8,7 +9,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     const body = await request.json();
-    const response = await fetch(`${process.env.API_BASE_URL || "http://127.0.0.1:8000"}/api/screen/breakouts`, {
+    const response = await fetch(`${apiBaseUrl}/api/screen/breakouts`, {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
       signal: AbortSignal.timeout(120000), cache: "no-store",
     });

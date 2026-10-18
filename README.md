@@ -2,6 +2,10 @@
 
 A US stock research screener inspired by Qullamägi's momentum breakout process. Phase 1 includes historical daily ingestion, deterministic indicators, an explainable breakout scan, conditional position sizing, and a dashboard with stock charts. This is research software: it does not place orders, predict future prices, or promise returns.
 
+## Access the live screener
+
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/STOCK) using `render.yaml` for a password-protected website, private API and managed PostgreSQL. Review hosting costs and enter your Massive key securely in Render. See the [hosting guide](docs/deployment.md). Publishing to GitHub alone does not create a running website.
+
 ## What is implemented
 
 - Python 3.12, FastAPI, SQLAlchemy, PostgreSQL and Alembic; SQLite is supported for lightweight local development and tests.
@@ -30,7 +34,7 @@ The API applies migrations before startup. Open the frontend on port 3000 and th
 
 Use `docker compose logs api web` to diagnose startup. `docker compose stop` preserves the database. **Do not delete the database volume to switch modes.** Use a separate Compose project (`docker compose -p stock-live ...`) and `.env` with `DEMO_MODE=false` for real data; this creates a separate named volume. Demo data and provider data must not share a research database.
 
-The Compose PostgreSQL password is a local development default. The API and web bind to loopback; the database has no host port. This application has no user authentication or authorization layer. Add authentication, request limits, HTTPS, restricted ingress and managed database credentials before any shared/public deployment. Use one API worker if the in-process scheduler is enabled.
+The Compose PostgreSQL password is a local development default. The API and web bind to loopback; the database has no host port. Local Compose has no access gate by default. The Render blueprint requires a web password and keeps the API private. Add a full account/authorization system and request limits before multi-user operation; use HTTPS, restricted ingress and managed database credentials for hosted deployments. Use one API worker if the in-process scheduler is enabled.
 
 ## Local development
 

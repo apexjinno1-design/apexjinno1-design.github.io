@@ -1,6 +1,7 @@
 import logging
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
+from threading import Lock
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -19,9 +20,13 @@ from app.services.ingestion import ingest_daily, save_reference
 from app.services.research import scan, stock_detail
 
 log = logging.getLogger(__name__)
+refresh_lock = Lock()
 
 
 def scheduled_refresh():
+    if not refresh_lock.acquire(blocking=False):
+        log.info("Refresh already running; skipping overlapping refresh")
+        return
     settings = get_settings()
     provider = None
     try:
@@ -30,15 +35,23 @@ def scheduled_refresh():
             start=datetime.now(UTC).date() - timedelta(days=550),
             end=datetime.now(UTC).date(),
         )
-        provider = MassiveProvider(settings.massive_api_key.get_secret_value())
+        provider = MassiveProvider(
+            settings.massive_api_key.get_secret_value(),
+            requests_per_minute=settings.massive_requests_per_minute,
+        )
         with SessionLocal() as db, db.begin():
             ingest_daily(db, provider, request.symbols, request.start, request.end)
             scan(db, datetime.now(UTC), ScanRequest().breakout, ScanRequest().risk)
-    except (ProviderError, ValueError, SQLAlchemyError):
+        log.info("Provider refresh and daily scan completed")
+    except ProviderError as exc:
+        # ProviderError messages omit response bodies, credentials and request URLs.
+        log.error("Provider refresh failed: %s", exc)
+    except (ValueError, SQLAlchemyError):
         log.error("Scheduled refresh failed; check provider access, schema and configured symbols")
     finally:
         if provider:
             provider.close()
+        refresh_lock.release()
 
 
 @asynccontextmanager
@@ -55,6 +68,15 @@ async def lifespan(app: FastAPI):
             max_instances=1,
             coalesce=True,
         )
+    if get_settings().initial_refresh_enabled and not get_settings().demo_mode:
+        scheduler.add_job(
+            scheduled_refresh,
+            "date",
+            run_date=datetime.now(UTC) + timedelta(seconds=1),
+            id="initial-provider-refresh",
+            max_instances=1,
+        )
+    if scheduler.get_jobs():
         scheduler.start()
     yield
     if scheduler.running:
@@ -89,7 +111,10 @@ def get_provider() -> MassiveProvider:
     if get_settings().demo_mode:
         raise HTTPException(409, "Use a separate database with DEMO_MODE=false for provider ingestion")
     try:
-        return MassiveProvider(get_settings().massive_api_key.get_secret_value())
+        return MassiveProvider(
+            get_settings().massive_api_key.get_secret_value(),
+            requests_per_minute=get_settings().massive_requests_per_minute,
+        )
     except ProviderError as exc:
         raise HTTPException(503, str(exc)) from None
 

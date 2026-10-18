@@ -37,7 +37,10 @@ def main():
         provider = None
         failed = []
         try:
-            provider = MassiveProvider(get_settings().massive_api_key.get_secret_value())
+            provider = MassiveProvider(
+                get_settings().massive_api_key.get_secret_value(),
+                requests_per_minute=get_settings().massive_requests_per_minute,
+            )
             if args.universe:
                 with SessionLocal() as db, db.begin():
                     refs = provider.active_stocks()
