@@ -5,8 +5,8 @@ services:
     runtime: docker
     plan: starter
     region: oregon
-    rootDir: backend
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     numInstances: 1
     envVars:
       - key: DATABASE_URL
@@ -32,8 +32,8 @@ services:
     runtime: docker
     plan: starter
     region: oregon
-    rootDir: frontend
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     healthCheckPath: /api/web-health
     envVars:
       - key: API_HOST

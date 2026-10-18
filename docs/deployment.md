@@ -13,6 +13,20 @@ GitHub stores and validates the code; Render runs the live frontend, private Pyt
 
 The launch link opens Render's review flow; it does not establish that a website has deployed. Account sign-in, billing approval where required, repository connection and secure key entry remain user actions.
 
+Use **New → Blueprint** to create the complete stack from `render.yaml`. Creating a single **Web Service** from the repository does not automatically use the blueprint and defaults to looking for `Dockerfile` at the repository root. This repository has separate frontend and backend Dockerfiles.
+
+## Fix “open Dockerfile: no such file or directory”
+
+The blueprint uses explicit paths relative to the repository root. For services managed by the blueprint, sync the latest `main` commit and redeploy. For manually created services, open **Settings → Build & Deploy** and use:
+
+| Setting | Website (`stock-web`) | Private API (`stock-api`) |
+| --- | --- | --- |
+| Root Directory | Leave blank | Leave blank |
+| Dockerfile Path | `./frontend/Dockerfile` | `./backend/Dockerfile` |
+| Docker Build Context Directory | `./frontend` | `./backend` |
+
+Save and select **Manual Deploy → Deploy latest commit**. A manually created website still needs the private API, PostgreSQL and environment settings described above; correcting its Dockerfile alone does not create those dependencies. Use the blueprint to provision/link the whole stack. Review existing services before creating another stack so you do not unintentionally duplicate paid resources. Do not delete existing databases.
+
 ## Service behavior
 
 - The API normalizes Render's PostgreSQL connection URL to psycopg 3. Alembic runs before Uvicorn. It honors `PORT` and uses one process to avoid duplicate schedulers.
