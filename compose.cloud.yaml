@@ -1,0 +1,17 @@
+# Optional trusted cloud/proxy CA. The certificate is public, never an API key.
+services:
+  api:
+    environment:
+      HTTPS_PROXY: ${HTTPS_PROXY:-}
+      HTTP_PROXY: ${HTTP_PROXY:-}
+      NO_PROXY: ${NO_PROXY:-localhost,127.0.0.1,db,api}
+    build:
+      secrets:
+        - cloud_proxy_ca
+  web:
+    build:
+      secrets:
+        - cloud_proxy_ca
+secrets:
+  cloud_proxy_ca:
+    file: ${STOCK_PROXY_CA:?Set STOCK_PROXY_CA to the trusted proxy CA certificate path}

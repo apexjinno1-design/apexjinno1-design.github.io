@@ -1,0 +1,6 @@
+import { FlaskConical } from "lucide-react";
+
+export default function Page() {
+  return <><div className="page-heading"><div><span className="eyebrow">EVIDENCE BEFORE EXPECTATIONS</span><h1>Backtesting<span className="heading-dot">.</span></h1><p>A chronological testing workflow is planned for Phase 3.</p></div><span className="tag">NOT IMPLEMENTED</span></div>
+  <section className="white-panel roadmap"><FlaskConical size={32}/><h2>No performance results yet.</h2><p>The daily screener is available now. Historical ingestion alone does not establish point-in-time data or an unbiased backtest.</p><ol><li><strong>Point-in-time universe</strong><p>Include delisted securities, original data vintages and publication timestamps where the provider permits.</p></li><li><strong>Chronological fills</strong><p>Model gaps, fees, spreads and slippage. Resolve stop/target ordering with intraday evidence; otherwise flag ambiguous trades conservatively.</p></li><li><strong>Out-of-sample validation</strong><p>Use time-ordered splits and walk-forward testing. Report sample size, uncertainty, expectancy, drawdown and 5-session target-before-stop observations.</p></li></ol><p className="muted">No win rate, return distribution, or profit factor is shown until it comes from a validated run.</p></section></>;
+}
