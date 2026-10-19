@@ -4,11 +4,11 @@ A US stock research screener inspired by Qullamägi's momentum breakout process.
 
 ## Run for free on your Windows computer
 
-Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), [download and extract this project](https://github.com/apexjinno1-design/STOCK/archive/refs/heads/main.zip), then double-click **Start STOCK.bat**. Enter your Massive key in the local prompt. The launcher starts the database, backend and website and opens your browser. **Stop STOCK.bat** stops it while preserving your data. See the [Windows guide](docs/windows.md). No Render account or hosted private service is required; Massive subscription limits still apply.
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), [download and extract this project](https://github.com/apexjinno1-design/apexjinno1-design.github.io/archive/refs/heads/main.zip), then double-click **Start STOCK.bat**. Enter your Massive key in the local prompt. The launcher starts the database, backend and website and opens your browser. **Stop STOCK.bat** stops it while preserving your data. See the [Windows guide](docs/windows.md). No Render account or hosted private service is required; Massive subscription limits still apply.
 
 ## Optional paid hosting
 
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/STOCK) using `render.yaml` for a password-protected website, private API and managed PostgreSQL. Review hosting costs and enter your Massive key securely in Render. See the [hosting guide](docs/deployment.md). Publishing to GitHub alone does not create a running website.
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/apexjinno1-design.github.io) using `render.yaml` for a password-protected website, private API and managed PostgreSQL. Review hosting costs and enter your Massive key securely in Render. See the [hosting guide](docs/deployment.md). Publishing to GitHub alone does not create a running website.
 
 ## What is implemented
 

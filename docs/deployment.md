@@ -4,7 +4,7 @@ GitHub stores and validates the code; Render runs the live frontend, private Pyt
 
 ## Launch
 
-1. Open [Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/STOCK), sign in, and authorize access to this GitHub repository. Alternatively, select **New Blueprint**, repository `apexjinno1-design/STOCK`, branch `main`, blueprint `render.yaml`.
+1. Open [Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/apexjinno1-design.github.io), sign in, and authorize access to this GitHub repository. Alternatively, select **New Blueprint**, repository `apexjinno1-design/apexjinno1-design.github.io`, branch `main`, blueprint `render.yaml`.
 2. Review the blueprint: `stock-web` (public website), `stock-api` (private API), and `stock-db` (managed PostgreSQL) in the same region. These use **paid service plans**. Review Render's current prices and deployment summary before creating them. No Render resources have been created by the agent.
 3. Enter your real Massive key in Render's secure `MASSIVE_API_KEY` prompt. The cloud environment's injected key is not automatically transferred. Never put it in GitHub, a frontend variable or chat.
 4. Deploy, then open the **public URL shown by Render for `stock-web`**. Use its actual URL; the hostname may receive a suffix.

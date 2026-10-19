@@ -22,6 +22,12 @@ Five frontend access-control unit tests passed. A production standalone server s
 
 Hosted additions include managed-PostgreSQL URL normalization, configurable provider request pacing, guarded initial background refresh, a private API service link, and mandatory website authentication in the Render blueprint. Deployment has not been executed in a Render account; no public service URL or account-level blueprint validation is claimed. Review its paid plans in Render before creating resources.
 
+## Windows local workflow
+
+On 19 October 2026, the `compose.local.yaml` profile was checked for live mode, initial/scheduled refresh, loopback-only ports and a separate persistent PostgreSQL volume. Its Docker workflow started successfully in the cloud validation environment, using an alternate host API port because the default port was already occupied. Background ingestion with the existing secure provider binding produced five real-stock candidates. NVDA returned 377 completed daily chart bars; API/database readiness, the dashboard and stock-detail requests passed. Cloud proxy trust configuration was used only for that environment's network.
+
+`Start STOCK.bat` and `Stop STOCK.bat` provide the Windows entry points. The PowerShell launcher uses a hidden local key prompt and caches the key under Git-ignored `.local`; those launcher files were reviewed but not executed on Windows. End-to-end Docker Desktop installation, PowerShell execution and browser opening still require the user's Windows computer. See [Windows instructions](windows.md). The workflow does not claim a publicly hosted site or transfer the cloud provider credential to the user's computer.
+
 ## Reproduce the PostgreSQL test
 
 The optional test requires a dedicated empty database with a name ending in `_test`. It refuses databases with application tables. It runs migrations and rolls back fixtures, then downgrades to base; never point it at a research or production database.
