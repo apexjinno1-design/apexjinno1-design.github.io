@@ -1,0 +1,9 @@
+# Combine with compose.yaml. Uses a separate stock-local project/database volume.
+services:
+  api:
+    environment:
+      DEMO_MODE: "false"
+      INITIAL_REFRESH_ENABLED: "true"
+      SCHEDULER_ENABLED: "true"
+      INGEST_SYMBOLS: ${INGEST_SYMBOLS:-SPY,QQQ,IWM,NVDA,AMD,AAPL,MSFT,META}
+      MASSIVE_REQUESTS_PER_MINUTE: ${MASSIVE_REQUESTS_PER_MINUTE:-5}

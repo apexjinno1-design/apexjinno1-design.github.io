@@ -2,7 +2,11 @@
 
 A US stock research screener inspired by Qullamägi's momentum breakout process. Phase 1 includes historical daily ingestion, deterministic indicators, an explainable breakout scan, conditional position sizing, and a dashboard with stock charts. This is research software: it does not place orders, predict future prices, or promise returns.
 
-## Access the live screener
+## Run for free on your Windows computer
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), [download and extract this project](https://github.com/apexjinno1-design/STOCK/archive/refs/heads/main.zip), then double-click **Start STOCK.bat**. Enter your Massive key in the local prompt. The launcher starts the database, backend and website and opens your browser. **Stop STOCK.bat** stops it while preserving your data. See the [Windows guide](docs/windows.md). No Render account or hosted private service is required; Massive subscription limits still apply.
+
+## Optional paid hosting
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/apexjinno1-design/STOCK) using `render.yaml` for a password-protected website, private API and managed PostgreSQL. Review hosting costs and enter your Massive key securely in Render. See the [hosting guide](docs/deployment.md). Publishing to GitHub alone does not create a running website.
 
